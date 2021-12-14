@@ -3,6 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	// "github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -36,6 +40,14 @@ func faqHandler(w http.ResponseWriter, r *http.Request) {
 	`)
 }
 
+func getUser(w http.ResponseWriter, r *http.Request) {
+	user := chi.URLParam(r, "userID")
+	fmt.Fprint(w, "inside User using Chi ", user)
+}
+func getUser2(w http.ResponseWriter, r *http.Request) {
+	user := chi.URLParam(r, "userID")
+	fmt.Fprint(w, "inside User using Chi ", user)
+}
 func pageNotFound(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
@@ -76,13 +88,24 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// fmt.Sprintf()
-	var router Router
+	// var router Router
 	// http.ListenAndServe
+	// var router chi.NewRouter()
+	r := chi.NewRouter()
+	// r.Get("/user", userHandler)
+	r.Use(middleware.Logger)
+	r.Route("/user", func(r chi.Router) {
+		r.Route("/{userID}", func(r chi.Router) {
+			r.Get("/", getUser)
+		})
+		// r.Get("/user2", getUser2)
+
+	})
 	// http.HandleFunc("/", homeHandler)
 	// http.HandleFunc("/", pathHandler)
 	// http.HandleFunc("/contact", contactHandler)
 	fmt.Println("Starting server at port 4500")
-	err := http.ListenAndServe(":4500", router)
+	err := http.ListenAndServe(":4500", r)
 	if err != nil {
 		panic(err)
 	}
