@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"path/filepath"
+	"text/template"
 
 	// "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
@@ -10,12 +13,29 @@ import (
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Check your whatsapp<h1/>")
+	// fmt.Fprintf(w, "<h1>Check your whatsapp<h1/>")
+	tplPath := filepath.Join("templates", "home.gohtml")
+	tpl, err := template.ParseFiles(tplPath)
+	if err != nil {
+		log.Printf("parsing template: %v", err)
+		http.Error(w, "error parsing template", http.StatusInternalServerError)
+		return
+		// panic(err) //TODO remove panic
+	}
+	err = tpl.Execute(w, nil)
+	// err = tpl.Execute(w, "test string")
+	if err != nil {
+		// panic(err) // TODO remove panic
+		log.Printf("executing template : %v:", err)
+		http.Error(w, "there was an error during execution template.", http.StatusInternalServerError)
+		return
+	}
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("data-1", "xx")
-	fmt.Fprint(w, "contactHanlder")
+	// fmt.Fprint(w, "contactHanlder")
+
 }
 func faqHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("data-1", "xx")
@@ -94,6 +114,7 @@ func main() {
 	r := chi.NewRouter()
 	// r.Get("/user", userHandler)
 	r.Use(middleware.Logger)
+	r.Get("/home", homeHandler)
 	r.Route("/user", func(r chi.Router) {
 		r.Route("/{userID}", func(r chi.Router) {
 			r.Get("/", getUser)
