@@ -5,31 +5,28 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
-	"text/template"
 
 	// "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/timereversal/lenslocked/views"
 )
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf8")
 	// tplPath := filepath.Join("templates", "contact.gohtml")
-	tpl, err := template.ParseFiles(filepath)
+	t, err := views.Parse(filepath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
-		http.Error(w, "error parsing template", http.StatusInternalServerError)
-		return
-		// panic(err) //TODO remove panic
-	}
-	err = tpl.Execute(w, nil)
-	// err = tpl.Execute(w, "test string")
-	if err != nil {
-		// panic(err) // TODO remove panic
-		log.Printf("executing template : %v:", err)
-		http.Error(w, "there was an error during execution template.", http.StatusInternalServerError)
+		http.Error(w, "there was an error Parsing the template.", http.StatusInternalServerError)
 		return
 	}
+	// viewTpl := views.Template{
+	// 	HTMLTpl: tpl,
+	// }
+	// viewTpl.Execute(w, nil)
+	t.Execute(w, nil)
+
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {

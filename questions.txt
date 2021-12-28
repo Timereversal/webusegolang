@@ -1,3 +1,4 @@
 -multiple  "package main in the same module in different folders at the same level" minute 3:36 video 1
 -it there a flow diagram for golang execution procedure
--Why OPTIONS is important in REST API ? video HTTP Methods 02:05
+-Why OPTIONS is important in REST API ? video HTTP Methods 02:05 (reference to study)
+- How i versioned my app so other people get acces with get ...../v1.2
