@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"html/template"
 	"os"
 )
@@ -27,4 +28,26 @@ func main() {
 		Friends: []string{"enver", "barnie", "Roger"},
 	}
 	t.Execute(os.Stdout, user)
+}
+
+// type Error struct {
+//     Path string
+//     User string
+// }
+
+// func (e *Error) Is(target error) bool {
+//     t, ok := target.(*Error)
+//     if !ok {
+//         return false
+//     }
+//     return (e.Path == t.Path || t.Path == "") &&
+//            (e.User == t.User || t.User == "")
+// }
+
+// if errors.Is(err, &Error{User: "someuser"}) {
+//     // err's User field is "someuser".
+// }
+
+func Connect() error {
+	return errors.New("Connection failed")
 }

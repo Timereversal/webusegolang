@@ -9,6 +9,7 @@ import (
 	// "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/timereversal/lenslocked/controllers"
 	"github.com/timereversal/lenslocked/views"
 )
 
@@ -91,16 +92,33 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	tpl, err := views.Parse(filepath.Join("templates", "home.gohtml"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/contact", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "faq.gohtml"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/faq", controllers.StaticHandler(tpl))
+
 	// fmt.Sprintf()
 	// var router Router
 	// http.ListenAndServe
 	// var router chi.NewRouter()
-	r := chi.NewRouter()
 	// r.Get("/user", userHandler)
-	r.Use(middleware.Logger)
-	r.Get("/home", homeHandler)
-	r.Get("/contact", contactHandler)
-	r.Get("/faq", faqHandler)
+	// r.Get("/contact", contactHandler)
+	// r.Get("/faq", faqHandler)
 	r.Route("/user", func(r chi.Router) {
 		r.Route("/{userID}", func(r chi.Router) {
 			r.Get("/", getUser)
@@ -112,7 +130,7 @@ func main() {
 	// http.HandleFunc("/", pathHandler)
 	// http.HandleFunc("/contact", contactHandler)
 	fmt.Println("Starting server at port 4500")
-	err := http.ListenAndServe(":4500", r)
+	err = http.ListenAndServe(":4500", r)
 	if err != nil {
 		panic(err)
 	}
