@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/timereversal/lenslocked/controllers"
+	"github.com/timereversal/lenslocked/templates"
 	"github.com/timereversal/lenslocked/views"
 )
 
@@ -94,23 +95,32 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	tpl, err := views.Parse(filepath.Join("templates", "home.gohtml"))
+	tpl, err := views.ParseFS(templates.FS, "home.gohtml")
 	if err != nil {
 		panic(err)
 	}
 	r.Get("/", controllers.StaticHandler(tpl))
 
-	tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
+	// tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
+	tpl, err = views.ParseFS(templates.FS, "contact.gohtml")
 	if err != nil {
 		panic(err)
 	}
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
-	tpl, err = views.Parse(filepath.Join("templates", "faq.gohtml"))
+	// tpl, err = views.Parse(filepath.Join("templates", "faq.gohtml"))
+	tpl, err = views.ParseFS(templates.FS, "faq.gohtml")
 	if err != nil {
 		panic(err)
 	}
 	r.Get("/faq", controllers.StaticHandler(tpl))
+
+	// tpl, err = views.Parse(filepath.Join("templates", "about.gohtml"))
+	tpl, err = views.ParseFS(templates.FS, "about.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/about", controllers.StaticHandler(tpl))
 
 	// fmt.Sprintf()
 	// var router Router

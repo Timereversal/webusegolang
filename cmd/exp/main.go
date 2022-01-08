@@ -1,9 +1,8 @@
 package main
 
 import (
+	_ "embed"
 	"errors"
-	"html/template"
-	"os"
 )
 
 type User struct {
@@ -14,20 +13,24 @@ type User struct {
 	Friends []string
 }
 
+//go:embed hello.txt
+var s string
+
 func main() {
 
-	t, err := template.ParseFiles("hello.gohtml")
-	if err != nil {
-		panic(err)
-	}
-	user := User{
-		Name:    "Berzoc",
-		Age:     36,
-		Height:  1.80,
-		Weight:  70,
-		Friends: []string{"enver", "barnie", "Roger"},
-	}
-	t.Execute(os.Stdout, user)
+	print(s)
+	// t, err := template.ParseFiles("hello.gohtml")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// user := User{
+	// 	Name:    "Berzoc",
+	// 	Age:     36,
+	// 	Height:  1.80,
+	// 	Weight:  70,
+	// 	Friends: []string{"enver", "barnie", "Roger"},
+	// }
+	// t.Execute(os.Stdout, user)
 }
 
 // type Error struct {
