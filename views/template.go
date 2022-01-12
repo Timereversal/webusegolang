@@ -12,8 +12,8 @@ type Template struct {
 	HTMLTpl *template.Template
 }
 
-func ParseFS(fs fs.FS, pattern string) (Template, error) {
-	tpl, err := template.ParseFS(fs, pattern)
+func ParseFS(fs fs.FS, pattern ...string) (Template, error) {
+	tpl, err := template.ParseFS(fs, pattern...)
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template: %w", err)
 	}
@@ -35,7 +35,7 @@ func Parse(filepath string) (Template, error) {
 func (t Template) Execute(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	err := t.HTMLTpl.Execute(w, nil)
+	err := t.HTMLTpl.Execute(w, data)
 	// err = tpl.Execute(w, "test string")
 	if err != nil {
 		// panic(err) // TODO remove panic

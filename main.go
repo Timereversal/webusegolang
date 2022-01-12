@@ -95,7 +95,7 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	tpl, err := views.ParseFS(templates.FS, "home.gohtml")
+	tpl, err := views.ParseFS(templates.FS, "home.gohtml", "layout-parts.gohtml")
 	if err != nil {
 		panic(err)
 	}
@@ -113,7 +113,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	r.Get("/faq", controllers.StaticHandler(tpl))
+	r.Get("/faq", controllers.FAQ(tpl))
 
 	// tpl, err = views.Parse(filepath.Join("templates", "about.gohtml"))
 	tpl, err = views.ParseFS(templates.FS, "about.gohtml")
