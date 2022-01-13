@@ -95,28 +95,28 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	tpl, err := views.ParseFS(templates.FS, "home.gohtml", "layout-parts.gohtml")
+	tpl, err := views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml")
 	if err != nil {
 		panic(err)
 	}
 	r.Get("/", controllers.StaticHandler(tpl))
 
 	// tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
-	tpl, err = views.ParseFS(templates.FS, "contact.gohtml")
+	tpl, err = views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml")
 	if err != nil {
 		panic(err)
 	}
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
 	// tpl, err = views.Parse(filepath.Join("templates", "faq.gohtml"))
-	tpl, err = views.ParseFS(templates.FS, "faq.gohtml")
+	tpl, err = views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml")
 	if err != nil {
 		panic(err)
 	}
 	r.Get("/faq", controllers.FAQ(tpl))
 
 	// tpl, err = views.Parse(filepath.Join("templates", "about.gohtml"))
-	tpl, err = views.ParseFS(templates.FS, "about.gohtml")
+	tpl, err = views.ParseFS(templates.FS, "about.gohtml", "tailwind.gohtml")
 	if err != nil {
 		panic(err)
 	}
