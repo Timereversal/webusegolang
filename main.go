@@ -115,6 +115,11 @@ func main() {
 	}
 	r.Get("/faq", controllers.FAQ(tpl))
 
+	tpl, err = views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/signup", controllers.FAQ(tpl))
 	// tpl, err = views.Parse(filepath.Join("templates", "about.gohtml"))
 	tpl, err = views.ParseFS(templates.FS, "about.gohtml", "tailwind.gohtml")
 	if err != nil {
