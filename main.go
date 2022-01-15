@@ -121,6 +121,7 @@ func main() {
 		"signup.gohtml", "tailwind.gohtml",
 	))
 	r.Get("/signup", usersC.New)
+	r.Post("/users", usersC.Create)
 	// tpl, err = views.Parse(filepath.Join("templates", "about.gohtml"))
 	tpl, err = views.ParseFS(templates.FS, "about.gohtml", "tailwind.gohtml")
 	if err != nil {
