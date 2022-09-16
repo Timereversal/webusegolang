@@ -146,8 +146,9 @@ func main() {
 	// http.HandleFunc("/", homeHandler)
 	// http.HandleFunc("/", pathHandler)
 	// http.HandleFunc("/contact", contactHandler)
-	fmt.Println("Starting server at port 4500")
-	err = http.ListenAndServe(":4500", r)
+	fmt.Println("Starting server at port 8080")
+	//err = http.ListenAndServe(":4500", r)
+	err = http.ListenAndServe(":8080", r)
 	if err != nil {
 		panic(err)
 	}
