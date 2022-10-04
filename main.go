@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/timereversal/lenslocked/models"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -116,7 +117,16 @@ func main() {
 	}
 	r.Get("/faq", controllers.FAQ(tpl))
 
-	usersC := controllers.Users{}
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
+	if err != nil {
+		panic(err)
+	}
+	userService := models.UserService{DB: db}
+
+	usersC := controllers.Users{
+		UserService: &userService,
+	}
 	usersC.Templates.New = views.Must(views.ParseFS(
 		templates.FS,
 		"signup.gohtml", "tailwind.gohtml",
