@@ -42,5 +42,5 @@ func (us *UserService) Create(email, password string) (*User, error) {
 	row := us.DB.QueryRow(`INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id`, email, email)
 	err = row.Scan(&user.ID)
 
-	return &user, nil
+	return &user, err
 }
