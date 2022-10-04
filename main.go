@@ -93,6 +93,7 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	tpl, err := views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml")
