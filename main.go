@@ -139,6 +139,8 @@ func main() {
 	r.Post("/users", usersC.Create)
 	r.Get("/signin", usersC.SignIn)
 	r.Post("/signin", usersC.ProcessSignIn)
+	r.Get("/users/me", usersC.CurrentUser)
+
 	// tpl, err = views.Parse(filepath.Join("templates", "about.gohtml"))
 	tpl, err = views.ParseFS(templates.FS, "about.gohtml", "tailwind.gohtml")
 	if err != nil {
