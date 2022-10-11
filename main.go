@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gorilla/csrf"
 	"github.com/timereversal/lenslocked/models"
 	"log"
 	"net/http"
@@ -167,7 +168,12 @@ func main() {
 	// http.HandleFunc("/contact", contactHandler)
 	fmt.Println("Starting server at port 8080")
 	//err = http.ListenAndServe(":4500", r)
-	err = http.ListenAndServe(":8080", r)
+	csrfKey := "abYT38IaMPKT671TAWMQMP5I9W4V1X5m"
+	csrfMw := csrf.Protect(
+		[]byte(csrfKey),
+		csrf.Secure(false),
+	)
+	err = http.ListenAndServe(":8080", csrfMw(r))
 	if err != nil {
 		panic(err)
 	}
